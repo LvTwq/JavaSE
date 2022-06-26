@@ -1,0 +1,20 @@
+package com.example.oop;
+
+import lombok.Data;
+
+/**
+ * @author Administrator
+ */
+@Data
+public class Person {
+    public String name;
+    public int age;
+
+
+    public void say(String content) {
+        System.out.println(content);
+    }
+
+
+
+}

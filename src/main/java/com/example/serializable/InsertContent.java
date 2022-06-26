@@ -1,0 +1,44 @@
+package com.example.serializable;
+
+import java.io.*;
+
+/**
+ * @author ��ï��
+ */
+public class InsertContent {
+    public static void main(String[] args) throws IOException {
+        insert("out.txt", 10, "��ï��\r\n");
+    }
+
+    private static void insert(String fileName, long pos, String insertContent) throws IOException {
+        // ������ʱ�ļ�����JVM�˳�ʱ��ɾ�������Ա��汻�����ļ��Ĳ������������
+        File tmp = File.createTempFile("tmp", null);
+        tmp.deleteOnExit();
+
+        try (
+                RandomAccessFile raf = new RandomAccessFile(fileName, "rw");
+                // ʹ����ʱ�ļ���������������
+                FileOutputStream tmpOut = new FileOutputStream(tmp);
+                FileInputStream tmpIn = new FileInputStream(tmp)) {
+            raf.seek(pos);
+            /*������뽫����������ݶ�����ʱ�ļ��б��� */
+            byte[] bbuf = new byte[64];
+            int hasRead = 0;
+            // ��������������
+            while ((hasRead = raf.read(bbuf)) > 0) {
+                // ����ȡ������д����ʱ�ļ�
+                tmpOut.write(bbuf, 0, hasRead);
+            }
+            /*����Ĵ������ڲ�������*/
+            raf.seek(pos);
+            // ׷����Ҫ���������
+            raf.write(insertContent.getBytes());
+            // ׷����ʱ�ļ�������
+            while ((hasRead = tmpIn.read(bbuf)) > 0) {
+                raf.write(bbuf, 0, hasRead);
+            }
+        }
+
+    }
+
+}
