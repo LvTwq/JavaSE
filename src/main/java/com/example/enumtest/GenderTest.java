@@ -18,36 +18,38 @@ public class GenderTest {
         g.setName("男");
         log.info(g + "代表" + g.getName());
     }
-}
 
-@Slf4j
-@Getter
-enum Gender {
-    // 枚举实例
-    MALE, FEMALE;
-    /**
-     * 实例变量
-     */
-    private String name;
+    @Slf4j
+    @Getter
+    enum Gender {
+        // 枚举实例
+        MALE, FEMALE;
+        /**
+         * 实例变量
+         */
+        private String name;
 
-    void setName(String name) {
-        switch (this) {
-            case MALE:
-                if ("男".equals(name)) {
-                    this.name = name;
-                } else {
-                    log.info("参数错误");
-                }
-                break;
-            case FEMALE:
-                if ("女".equals(name)) {
-                    this.name = name;
-                } else {
-                    log.info("参数错误");
-                }
-                break;
-            default:
-                break;
+        void setName(String name) {
+            switch (this) {
+                case MALE:
+                    if ("男".equals(name)) {
+                        this.name = name;
+                    } else {
+                        log.info("参数错误");
+                    }
+                    break;
+                case FEMALE:
+                    if ("女".equals(name)) {
+                        this.name = name;
+                    } else {
+                        log.info("参数错误");
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
+
+

@@ -1,5 +1,13 @@
 package com.example.collect;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.util.StopWatch;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,16 +16,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.util.StopWatch;
-
-import jdk.nashorn.internal.ir.debug.ObjectSizeCalculator;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author 吕茂陈
@@ -103,15 +101,15 @@ public class ListMistakes {
 
         stopWatch.start("listSearch");
         Object list = listSearch(elementCount, loopCount);
-        log.info("list 大小：{}", ObjectSizeCalculator.getObjectSize(list));
-        stopWatch.stop();
+//        log.info("list 大小：{}", ObjectSizeCalculator.getObjectSize(list));
+//        stopWatch.stop();
 
         stopWatch.start("mapSearch");
         Object map = mapSearch(elementCount, loopCount);
         stopWatch.stop();
 
-        log.info("map 大小：{}", ObjectSizeCalculator.getObjectSize(map));
-        log.info("{}", stopWatch.prettyPrint());
+//        log.info("map 大小：{}", ObjectSizeCalculator.getObjectSize(map));
+//        log.info("{}", stopWatch.prettyPrint());
     }
 
 

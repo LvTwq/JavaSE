@@ -1,12 +1,11 @@
 package com.example.multithreading.feature;
 
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-
-import org.junit.Test;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author 吕茂陈
@@ -17,7 +16,7 @@ public class CompletableFutureTest {
 
     @Test
     public void test01() throws ExecutionException, InterruptedException {
-        CompletableFuture<String> completableFuture = new CompletableFuture();
+        CompletableFuture<String> completableFuture = new CompletableFuture<>();
         // get()⽅法在任务结束之前将⼀直处在阻塞状态，由于上⾯创建的 Future 没有返回，
         // 所以在这⾥调⽤ get() 将会永久性的堵塞
         String s = completableFuture.get();
@@ -27,7 +26,7 @@ public class CompletableFutureTest {
 
     @Test
     public void test02() throws ExecutionException, InterruptedException {
-        // 异步计算，没有返回值
+        // runAsync 异步计算，没有返回值
         CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
             try {
                 TimeUnit.SECONDS.sleep(3);
@@ -41,7 +40,7 @@ public class CompletableFutureTest {
 
     @Test
     public void test03() throws ExecutionException, InterruptedException {
-        // 获取异步计算的返回结果
+        // supplyAsync 获取异步计算的返回结果
         CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
             try {
                 TimeUnit.SECONDS.sleep(3);
@@ -49,7 +48,7 @@ public class CompletableFutureTest {
                 throw new IllegalStateException(e);
             }
             log.info("运行在一个单独的线程中");
-            return "我有返回值";
+            return "我是返回值";
         });
 
         log.info(future.get());
@@ -66,21 +65,50 @@ public class CompletableFutureTest {
     @Test
     public void test04() throws ExecutionException, InterruptedException {
         CompletableFuture<String> comboText = CompletableFuture.supplyAsync(() -> {
-//            try {
-//                TimeUnit.SECONDS.sleep(3);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            log.info("👍");
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // 使用thenApply，可能是异步线程，也可能是主线程 打印
+            log.info("👍");
             return "赞";
             // 对thenApply的调用并没有阻塞程序打印log，也就是 通过回调通知机制
         }).thenApply(first -> {
+            // 异步线程打印
             log.info("在看");
             return first + ", 在看";
         }).thenApply(second -> second + ", 转发");
 
+        // 都是主线程打印
         log.info("三连有没有？");
-        log.info(comboText.get());
+        log.info("最后结果：{}", comboText.get());
+
+    }
+
+
+    @Test
+    public void test07() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    log.info("异步线程开始");
+                    return "任务A";
+                })
+                // 使用thenApplyAsync ，那么执行的线程是从ForkJoinPool.commonPool()中获取不同的线程进行执行
+                .thenApplyAsync(first -> {
+                    log.info("第一个任务：{}", first);
+                    return "任务B";
+                }).thenApplyAsync(second -> {
+                    log.info("第二个任务：{}", second);
+                    return "任务C";
+                });
+
+        log.info("先被打印出来");
+        log.info("最后结果：{}", future.get());
     }
 
 
