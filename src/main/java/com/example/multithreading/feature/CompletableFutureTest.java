@@ -1,5 +1,7 @@
 package com.example.multithreading.feature;
 
+import lombok.Builder;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -174,4 +176,37 @@ public class CompletableFutureTest {
         log.info(maturityFuture.get());
     }
 
+
+    @Test
+    public void test08() throws ExecutionException, InterruptedException {
+        final CompletableFuture<Void> voidCompletableFuture = CompletableFuture.supplyAsync(
+                        // 模拟远端API调⽤，这⾥只返回了⼀个构造的对象
+                        () -> Product.builder().id(12345L).name("颈椎/腰椎治疗仪").build())
+                // 不想从回调函数中返回任何结果，那可以使⽤ thenAccept
+                .thenAccept(product -> {
+                    log.info("获取到远程API产品名称 " + product.getName());
+                });
+        voidCompletableFuture.get();
+    }
+
+
+    @Builder
+    @Getter
+    static class Product {
+        long id;
+        String name;
+    }
+
+    @Test
+    public void test09() throws ExecutionException, InterruptedException {
+        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            //前序操作
+            log.info("前序操作");
+            return "1";
+        }).thenRun(() -> {
+            //串⾏的后需操作，⽆参数也⽆返回值
+            log.info("then 操作");
+        });
+        future.get();
+    }
 }

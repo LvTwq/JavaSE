@@ -1,9 +1,9 @@
 package com.example.regular;
 
+import org.junit.Test;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.junit.Test;
 
 /**
  * 正则学习
@@ -119,7 +119,7 @@ public class RegularTest {
         String[] mails = {
                 "kongyee@163.com",
                 "kongkyu@gmail.com",
-                "dlsikjg.thunisoft"
+                "dlsikjg.qq"
         };
         for (String mail : mails) {
             Matcher matcher = test06.matcher(mail);
