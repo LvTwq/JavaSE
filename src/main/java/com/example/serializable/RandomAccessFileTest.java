@@ -10,7 +10,6 @@ public class RandomAccessFileTest {
     public static void main(String[] args) {
         try (RandomAccessFile raf = new RandomAccessFile("object.txt", "r")) {
             System.out.println("RandomAccessFile���ļ�ָ��ĳ�ʼλ�ã�" + raf.getFilePointer());
-            // �ƶ�raf���ļ���¼ָ���λ��
             raf.seek(300);
             byte[] bbuf = new byte[1024];
             int hasRead = 0;

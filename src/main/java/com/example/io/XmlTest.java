@@ -1,9 +1,12 @@
 package com.example.io;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
+import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.example.io.bean.FyajVo;
+import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -11,14 +14,9 @@ import org.dom4j.io.SAXReader;
 import org.junit.Test;
 import org.springframework.util.StringUtils;
 
-import com.example.io.bean.FyajVo;
-
-import cn.hutool.core.io.resource.ResourceUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * @author 吕茂陈
@@ -73,12 +71,12 @@ public class XmlTest {
         String s1 = "null";
         String s2 = "张三";
         String s3 = "张三";
-        System.out.println(StrUtil.concat(true, s1, StringUtils.isEmpty(s1) ? null : ",", s2, s3));
+        log.info(CharSequenceUtil.concat(true, s1, StringUtils.isEmpty(s1) ? null : ",", s2, s3));
     }
 
     @Test
     public void test04() {
-        System.out.println("111".equals(null));
+        log.info(String.valueOf("111".equals(null)));
     }
 }
 

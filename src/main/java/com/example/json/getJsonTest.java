@@ -1,13 +1,12 @@
 package com.example.json;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Test;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author 吕茂陈
@@ -79,7 +78,7 @@ public class getJsonTest {
         System.out.println(b);
 
         List<Integer> integerList =
-                JSON.parseArray(object.getJSONArray("list").toJSONString(), Integer.class);
+                JSON.parseArray(object.getJSONArray("list").toString(), Integer.class);
         System.out.println(integerList);
 
         System.out.println(object.getString("null"));

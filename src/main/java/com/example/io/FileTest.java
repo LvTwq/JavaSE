@@ -1,18 +1,18 @@
 package com.example.io;
 
+import com.example.lambda.ThrowingFunction;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import org.junit.Test;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author 吕茂陈
@@ -38,8 +38,8 @@ public class FileTest {
         tmpFile.deleteOnExit();
 
         // 以系统时间作为新文件名创建新文件
-        File newFile = new File(System.currentTimeMillis() + "");
-        System.out.print("==============newFile对象所对应的文件或目录==============");
+        File newFile = new File(System.currentTimeMillis() + ".txt");
+        log.info("==============newFile对象所对应的文件或目录==============");
         log.info(newFile.exists() ? "存在" : "不存在");
 
         // 以指定newFile对象创建一个文件
@@ -47,17 +47,15 @@ public class FileTest {
         log.info(newFile.mkdir() ? "可以" : "无法" + "创建该目录");
 
         // 使用list() 方法列出当前路径下所有的文件和路径
-        String[] fileList = file.list();
+        String[] fileList = newFile.list();
         log.info("====当前路径下所有的文件和路径如下====");
-        for (String fileName :
-                fileList) {
+        for (String fileName : fileList) {
             log.info(fileName);
         }
 
         File[] roots = File.listRoots();
         log.info("====系统下所有根路径如下====");
-        for (File root :
-                roots) {
+        for (File root : roots) {
             log.info(String.valueOf(root));
         }
     }
@@ -68,25 +66,6 @@ public class FileTest {
         String dir = String.join("/", "spFilePath", "9496b636d1064a33bec8b2a883a9be25");
         String tar = String.join("/", "spFilePath", "9496b636d1064a33bec8b2a883a9be25");
         zipFileTree(new File(dir), "zip");
-    }
-
-    public static void pack(String sourceDirPath, String zipFilePath) throws IOException {
-        Path file = Files.createFile(Paths.get(zipFilePath));
-        try (ZipOutputStream zs = new ZipOutputStream(Files.newOutputStream(file))) {
-            Path path = Paths.get(sourceDirPath);
-            Files.walk(path)
-                    .filter(p -> !Files.isDirectory(p))
-                    .forEach(p -> {
-                        ZipEntry zipEntry = new ZipEntry(path.relativize(path).toString());
-                        try {
-                            zs.putNextEntry(zipEntry);
-                            Files.copy(p, zs);
-                            zs.closeEntry();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
-        }
     }
 
 
@@ -171,6 +150,26 @@ public class FileTest {
                     ex.printStackTrace();
                 }
             }
+        }
+    }
+
+
+    @Test
+    public void filesWalk() throws IOException {
+        // 无限深度，递归遍历文件夹
+        try (Stream<Path> pathStream = Files.walk(Paths.get("."))) {
+            // 只查普通文件
+            pathStream.filter(Files::isRegularFile)
+                    // 搜索 java 源文件
+                    .filter(FileSystems.getDefault().getPathMatcher("glob:**/*.java")::matches)
+                    .flatMap(ThrowingFunction.unchecked(path -> {
+                        // 读取文件内容，转换为 Stream<List>
+                        return Files.readAllLines(path).stream()
+                                // 使用正则过滤带有 public class 的行
+                                .filter(line -> Pattern.compile("public class").matcher(line).find())
+                                //把这行文件内容转换为文件名+行
+                                .map(line -> path.getFileName() + ">>" + line);
+                    })).forEach(e -> log.info("{}", e));
         }
     }
 }

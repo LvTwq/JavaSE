@@ -1,14 +1,16 @@
 package com.example.array;
 
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.Test;
-
 /**
  * @author 吕茂陈
  */
+@Slf4j
 public class Num2Rmb {
 
     private String[] hanArr = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
@@ -52,8 +54,8 @@ public class Num2Rmb {
 
     public static void main(String[] args) {
         Num2Rmb nr = new Num2Rmb();
-        //System.out.println(Arrays.toString(nr.divide(236711125.123)));
-        System.out.println(nr.toHanStr("6109"));
+        //log.info(Arrays.toString(nr.divide(236711125.123)));
+        log.info(nr.toHanStr("6109"));
     }
 
 
@@ -62,11 +64,11 @@ public class Num2Rmb {
         int[] arr = {1, 2, 3};
         // arr 的类型，是 int[]，asList方法把 int[]作为了泛型对象
         List<int[]> ints = Arrays.asList(arr);
-        System.out.printf("ints:{%s},size:{%s},class{%s}", ints, ints.size(), ints.get(0).getClass());
+        log.info("ints:{},size:{},class{}", ints, ints.size(), ints.get(0).getClass());
 
-        System.out.println("==============================");
+        log.info("==============================");
         List<Integer> list = Arrays.stream(arr).boxed().collect(Collectors.toList());
-        System.out.printf("list:{%s},size:{%s},class{%s}", list, list.size(), list.get(0).getClass());
+        log.info("list:{},size:{},class{}", list, list.size(), list.get(0).getClass());
     }
 
     @Test

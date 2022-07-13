@@ -1,5 +1,10 @@
 package com.example.multithreading.concurrent;
 
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import org.springframework.util.Assert;
+import org.springframework.util.StopWatch;
+
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,12 +16,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
-
-import org.junit.Test;
-import org.springframework.util.Assert;
-import org.springframework.util.StopWatch;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author 吕茂陈
@@ -103,7 +102,7 @@ public class ConcurrentMapTest {
         Assert.isTrue(normalUse.size() == ITEM_COUNT, "normalUse 大小错误！");
         // 校验累计总数
         Assert.isTrue(normalUse.values().stream().mapToLong(
-                l -> l).reduce(0, Long::sum) == LOOP_COUNT
+                        l -> l).reduce(0, Long::sum) == LOOP_COUNT
                 , "normalUse 计算错误！");
 
         stopWatch.start("goodUse");
@@ -111,7 +110,7 @@ public class ConcurrentMapTest {
         stopWatch.stop();
         Assert.isTrue(goodUse.size() == ITEM_COUNT, "goodUse 大小错误！");
         Assert.isTrue(goodUse.values().stream().mapToLong(
-                l -> l).reduce(0, Long::sum) == LOOP_COUNT
+                        l -> l).reduce(0, Long::sum) == LOOP_COUNT
                 , "goodUse 计算错误！");
 
         log.info(stopWatch.prettyPrint());

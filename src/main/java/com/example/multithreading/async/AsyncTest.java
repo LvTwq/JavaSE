@@ -17,6 +17,7 @@ public class AsyncTest {
         log.info("test01");
         async();
         async2();
+        throw new RuntimeException("看看 Async 的任务有没有执行");
     }
 
 
