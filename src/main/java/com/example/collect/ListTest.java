@@ -1,32 +1,31 @@
 package com.example.collect;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.example.lombok.Student;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.util.CollectionUtils;
 
-import com.example.lombok.Student;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author 吕茂陈
  */
+@Slf4j
 public class ListTest {
-    public static void main(String[] args) {
-        List books = new ArrayList();
-        books.add("javascript");
-        books.add("python");
-        books.add("java");
-        System.out.println(books);
-
-    }
 
 
     @Test
-    public void test01(){
+    public void test01() {
         List<Student> list = new ArrayList<>();
         list.add(null);
-        System.out.println(CollectionUtils.isEmpty(list));
+        log.info("list 是否为空：{}", CollectionUtils.isEmpty(list));
+
+        // 按 age 分组，value为student的id的list
+        Map<Integer, List<Long>> ageMap = list.stream().collect(Collectors.groupingBy(Student::getAge, Collectors.mapping(Student::getId, Collectors.toList())));
+
     }
 }
 

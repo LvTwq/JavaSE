@@ -20,6 +20,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.github.itning</groupId>
             <artifactId>guava-retrying3</artifactId>
             <version>3.0.1</version>

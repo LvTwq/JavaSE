@@ -1,16 +1,15 @@
 package com.example.time;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.time.ZoneId;
-import java.util.Date;
-
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+
+import java.time.*;
+import java.util.Date;
 
 /**
  * @author 吕茂陈
  */
+@Slf4j
 public class DateTest {
     public static void main(String[] args) {
         Date d1 = new Date();
@@ -23,7 +22,7 @@ public class DateTest {
     }
 
     @Test
-    public void test01(){
+    public void test01() {
         YearMonth date = YearMonth.now();
         // 2021-12
         System.out.println(date);
@@ -36,7 +35,7 @@ public class DateTest {
         System.out.println(localDate);
 
         // 当月最后一天最后一秒：2021-12-31T23:59:59
-        LocalDateTime localDateTime = localDate.atTime(23,59,59);
+        LocalDateTime localDateTime = localDate.atTime(23, 59, 59);
         System.out.println(localDateTime);
 
         // 2021-12-01T00:00
@@ -51,7 +50,7 @@ public class DateTest {
     }
 
     @Test
-    public void test02(){
+    public void test02() {
         String decrypt = "20220124135527";
         String format = String.format("%s-%s-%sT%s:%s:%s", decrypt.substring(0, 4), decrypt.substring(4, 6),
                 decrypt.substring(6, 8), decrypt.substring(8, 10), decrypt.substring(10, 12), decrypt.substring(12, 14));
@@ -64,5 +63,16 @@ public class DateTest {
 
     public static long dateTime2TimeStamp(LocalDateTime localDateTime) {
         return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+
+    @Test
+    public void test03() {
+        Instant now = Instant.now();
+        log.info("{}", now);
+        long epochSecond = Instant.now().getEpochSecond();
+        log.info("时间戳，秒：{}", epochSecond);
+        long l = Instant.now().toEpochMilli();
+        log.info("时间戳，毫秒{}", l);
     }
 }

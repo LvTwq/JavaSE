@@ -1,10 +1,14 @@
 package com.example.lombok;
 
-import javax.validation.constraints.NotNull;
-
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+
+@Getter
+@Setter
 @RequiredArgsConstructor
 public class Student {
     private Long id;
