@@ -163,7 +163,7 @@ public class CompletableFutureTest {
             } else {
                 return "未成年禁止入内";
             }
-        }).thenApply((str) -> {
+        }).thenApply(str -> {
             log.info("游戏开始！");
             return str;
         }).handle((res, ex) -> {

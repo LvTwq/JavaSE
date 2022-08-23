@@ -1,15 +1,21 @@
 package com.example.io;
 
 import com.example.lambda.ThrowingFunction;
+import com.example.optional.Employee;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -171,5 +177,28 @@ public class FileTest {
                                 .map(line -> path.getFileName() + ">>" + line);
                     })).forEach(e -> log.info("{}", e));
         }
+    }
+
+
+    @Test
+    public void replaceAdd() throws IOException {
+        List<String> newLines = new ArrayList<>();
+        Files.readAllLines(Path.of("spFilePath/dnsmasq.conf"), StandardCharsets.UTF_8)
+                .forEach(line -> {
+                    if (line.contains("listen-address")) {
+                        newLines.add("listen-address=114.114.114.115");
+                    } else {
+                        newLines.add(line);
+                    }
+                });
+        Files.write(Path.of("spFilePath/dnsmasq.conf"), newLines, StandardOpenOption.TRUNCATE_EXISTING);
+    }
+
+    @Test
+    public void test01() throws IOException {
+        List<Employee> list = List.of(Employee.builder().name("jsduiolfg").describe("描述").build(), Employee.builder().name("asdgdsfagd").describe("描述").build());
+        List<String> collect = list.stream().map(e -> e.getName() + StringUtils.SPACE + e.getDescribe()).collect(Collectors.toList());
+        log.info("{}", collect);
+        Files.write(Path.of("spFilePath/demo.txt"), collect, StandardOpenOption.TRUNCATE_EXISTING);
     }
 }
