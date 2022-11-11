@@ -1,4 +1,4 @@
-package com.example.training;
+package com.example.lambda;
 
 /**
  * @author 吕茂陈

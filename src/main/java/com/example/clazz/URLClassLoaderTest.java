@@ -1,4 +1,4 @@
-package com.example.classloader;
+package com.example.clazz;
 
 import java.net.URL;
 import java.net.URLClassLoader;

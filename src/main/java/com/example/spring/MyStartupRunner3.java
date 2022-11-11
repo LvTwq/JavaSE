@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MyStartupRunner3 implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        log.info("33333333333");
+//        throw new RuntimeException("启动类异常！！！");
+//        log.info("33333333333");
     }
 }

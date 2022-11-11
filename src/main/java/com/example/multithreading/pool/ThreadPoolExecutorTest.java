@@ -1,14 +1,12 @@
 package com.example.multithreading.pool;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
-
+import cn.hutool.core.lang.Snowflake;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.UUID;
+import java.util.concurrent.*;
+import java.util.stream.IntStream;
 
 /**
  * @author 吕茂陈
@@ -27,5 +25,20 @@ public class ThreadPoolExecutorTest {
         IntStream.rangeClosed(0, 2).forEach(e -> pool.execute(
                 () -> log.info("当前数字：{}", e)
         ));
+    }
+
+
+    @Test
+    public void test02() {
+        ExecutorService executorService = Executors.newFixedThreadPool(100);
+        Snowflake snowflake = new Snowflake();
+        IntStream.range(0, 10).forEach(i -> {
+            executorService.submit(() -> {
+                log.info(UUID.randomUUID().toString().replace("-", ""));
+                log.info(snowflake.nextIdStr());
+            });
+        });
+        log.info(UUID.randomUUID().toString());
+        log.info(snowflake.nextIdStr());
     }
 }

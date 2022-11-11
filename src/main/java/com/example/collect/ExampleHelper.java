@@ -1,14 +1,8 @@
 package com.example.collect;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.common.collect.Sets;
+
+import java.util.*;
 
 /**
  * @author 吕茂陈
@@ -35,7 +29,4 @@ public final class ExampleHelper {
     }
 
 
-    <E> void testLength(E... elements) {
-        System.out.println(elements.length);
-    }
 }
