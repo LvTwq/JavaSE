@@ -21,5 +21,6 @@ public class LambdaArrays {
         // 根据元素的索引计算当前元素的值
         Arrays.parallelSetAll(arr3, operand -> operand * 5);
         System.out.println(Arrays.toString(arr3));
+
     }
 }

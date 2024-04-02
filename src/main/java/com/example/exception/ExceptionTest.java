@@ -1,12 +1,11 @@
 package com.example.exception;
 
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import org.junit.Test;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author 吕茂陈
@@ -129,6 +128,27 @@ public class ExceptionTest {
     private void cancelOrderWrong() {
         //这里有问题
         Exceptions.orderExists();
+    }
+
+
+    @Test
+    public void test06() {
+        // 由于 CheckedException 是 受检异常，所以编译器“检查”，必须处理
+        try {
+            lab();
+        } catch (CheckedException e) {
+            throw new RuntimeException(e);
+        }
+        // 非受检异常，不需要处理
+        lab1();
+    }
+
+    private void lab() throws CheckedException {
+        log.info("11111");
+    }
+
+    private void lab1() throws BusinessException {
+        log.info("11111");
     }
 }
 

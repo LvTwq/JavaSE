@@ -9,6 +9,8 @@ import java.io.ObjectInputStream;
 
 @Slf4j
 public class ReadObject {
+
+
 	public static void main(String[] args) {
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("person.txt"))) {
 			Person p = (Person) ois.readObject();
@@ -33,4 +35,8 @@ public class ReadObject {
 			e.printStackTrace();
 		}
 	}
+
+
+
+
 }

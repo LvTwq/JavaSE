@@ -1,6 +1,7 @@
 package com.example.io;
 
 import cn.hutool.core.codec.Base64;
+import cn.hutool.core.codec.Base64Decoder;
 import cn.hutool.core.text.UnicodeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -34,5 +35,13 @@ public class Base64Test {
 		log.info(str2);
 		String str3 = UnicodeUtil.toString(URLDecoder.decode(str, StandardCharsets.UTF_8));
 		log.info(str3);
+	}
+
+
+	@Test
+	public void test01() {
+		String s = Base64Decoder.decodeStr("KGludGVnZXIpIDAN");
+		String s1 = Base64Decoder.decodeStr("KGludGVnZXIpIDA=");
+		System.out.println("1");
 	}
 }

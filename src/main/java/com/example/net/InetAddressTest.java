@@ -1,5 +1,8 @@
 package com.example.net;
 
+import cn.hutool.core.net.NetUtil;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.net.InetAddress;
 
@@ -17,5 +20,11 @@ public class InetAddressTest {
         System.out.println("是否可达：" + local.isReachable(5000));
         // 获取该InetAddress实例对应的全限定域名
         System.out.println(local.getCanonicalHostName());
+    }
+
+
+    @Test
+    public void test02() {
+        System.out.println(NetUtil.getLocalhostStr());
     }
 }

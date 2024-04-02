@@ -1,5 +1,7 @@
 package com.example.proxy;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -8,6 +10,7 @@ import java.lang.reflect.Method;
  * @author 吕茂陈
  * @date 2021/11/01 20:11
  */
+@Slf4j
 public class MyInvocationHandler01 implements InvocationHandler {
 
     /**
@@ -21,14 +24,14 @@ public class MyInvocationHandler01 implements InvocationHandler {
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        System.out.println("=========正在执行的方法：" + method);
+        log.info("=========正在执行的方法：" + method);
         if (args != null) {
-            System.out.println("下面的执行该方法时传入的实参：");
+            log.info("下面的执行该方法时传入的实参：");
             for (Object val : args) {
-                System.out.println(val);
+                log.info("{}",val);
             }
         } else {
-            System.out.println("调用该方法没有实参！");
+            log.info("调用该方法没有实参！");
         }
         return null;
     }

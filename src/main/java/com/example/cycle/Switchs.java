@@ -1,10 +1,12 @@
 package com.example.cycle;
 
+import org.junit.Test;
+
 public class Switchs {
     public static void main(String[] args) {
-        method("null");
+        method("sth");
         // NullPointerException
-        method(null);
+//        method(null);
     }
 
     /**
@@ -17,7 +19,7 @@ public class Switchs {
             // 肯定不是进入这里
             case "sth":
                 System.out.println("it's sth");
-                break;
+//                break;
             // 也不是进入这里
             case "null":
                 System.out.println("it's null");
@@ -26,5 +28,18 @@ public class Switchs {
             default:
                 System.out.println("default");
         }
+    }
+
+
+    @Test
+    public void test01() {
+        int i=0;
+        if (i ==0) {
+            System.out.println("1111");
+            i = 1;
+        } else if (i != 0) {
+            System.out.printf("2222");
+        }
+        System.out.println(String.valueOf(i));
     }
 }

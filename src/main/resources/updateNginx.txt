@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# 指定需要处理的文件名(有无网关，conf路径不一样)
+gateFile="/home/lmc/common/client_location/client_location"
+controllerFile="/home/lmc/app/nginx/conf/vhost/client_location/download_location"
+testFile="/home/lmc/app/nginx/conf/vhost/server_filecenter.conf"
+
+# 查找包含"下载中心速率"的行，并将下一行替换为"limit_rate k;"
+sed -i '/下载中心速率/{n;s/.*/limit_rate %sk;/;}' $gateFile
+sed -i '/下载中心速率/{n;s/.*/limit_rate %sk;/;}' $controllerFile
+sed -i '/下载中心速率/{n;s/.*/limit_rate %sk;/;}' $testFile
+
+# 重启nginx(有无网关，nginx重启方式不一样)
+/home/lmc/bin/nginx-reload.sh
+docker exec -i nginx /home/lmc/bin/nginx-reload.sh
+
+echo '下载中心修改 nginx limit_rate 完成'

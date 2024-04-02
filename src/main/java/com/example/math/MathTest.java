@@ -1,15 +1,19 @@
 package com.example.math;
 
+import cn.hutool.core.date.DateUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-
-import org.junit.Test;
 
 /**
  * @author 吕茂陈
  * @date 2021/12/08 15:46
  */
+@Slf4j
 public class MathTest {
 
 
@@ -22,8 +26,8 @@ public class MathTest {
         // 精度不丢失 0.5
         double f1 = 1d;
         double f2 = 3d;
-        System.out.println((f1 / f2)*100);
-        System.out.println(Math.round(f1/f2));
+        System.out.println((f1 / f2) * 100);
+        System.out.println(Math.round(f1 / f2));
 
         // 精度不丢失 0.5
         double d1 = 1d;
@@ -122,4 +126,52 @@ public class MathTest {
         long bigNum = Integer.MAX_VALUE + 2L; // 2 promoted to long. Yields 2_147_483_649
         long bigNegNum = Integer.MIN_VALUE - 1L; // Yields -2_147_483_649
     }
+
+
+    @Test
+    public void test07() {
+        int i = 100 / 12;
+        System.out.println(i);
+        int j = 100 % 12;
+        System.out.println(j);
+
+        double l = DateUtil.currentSeconds();
+        // 科学计数法
+        log.info("l:{}", l);
+        double d = l / 1000;
+        log.info("d:{}", d);
+        double v = (double) DateUtil.currentSeconds() / 1000;
+        log.info("v:{}", v);
+
+        // 精度丢失
+        long v1 = (long) v * 1000;
+        log.info("v1:{}", v1);
+
+
+        // 四舍五入,保留2位小数
+        BigDecimal divide = new BigDecimal(l).divide(new BigDecimal(Integer.toString(1)), 2, RoundingMode.HALF_UP);
+        log.info("d2:{}", divide);
+    }
+
+
+    @Test
+    public void test08() {
+        long current = DateUtil.current();
+        double v = (double) current / 1000;
+        System.out.println(current);
+        System.out.println(v);
+    }
+
+
+    @Test
+    public void test09() {
+        long i = 0;
+        while (i < 1000000000000000L) {
+            i ++;
+            System.out.println(i);
+        }
+        System.out.println("=============");
+    }
+
+
 }

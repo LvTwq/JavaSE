@@ -1,20 +1,18 @@
 package com.example.stream;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
+import com.example.oop.Person;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 
-import com.example.oop.Person;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * @author 吕茂陈
@@ -112,6 +110,56 @@ public class StreamTest {
     @Test
     public void test07() {
         Stream.of(1, 2, 3, 4, 5, 6, 7).filter(i -> i % 2 == 0).filter(i -> i > 3).toArray();
+    }
+
+
+
+
+
+    @Test
+    public void test08() {
+        Stream.of(new Person()).collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Person::getAge))), ArrayList::new));
+
+    }
+
+
+    @Test
+    public void tet09() {
+        //将map转换为新map
+        Map<String, String> original = Map.of();
+        Map<String, Person> copy = original.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> Person.builder().name(e.getValue()).build()));
+    }
+
+
+    @Test
+    public void test10() {
+        List<Person> list = List.of(Person.builder().name(null).build());
+        List<String> collect = list.stream().map(Person::getName).collect(Collectors.toList());
+
+        List<String> strings = List.of("1");
+        collect.stream().filter(o -> StringUtils.isNotBlank(o) && strings.contains(o)).
+                forEach(e -> System.out.println(e));
+    }
+
+
+    @Test
+    public void test11() {
+        List<Person> collect = Stream.of(Person.builder().name("lmc").build(), Person.builder().name("lmc").build())
+                .filter(distinctByKey(Person::getName))
+                .collect(Collectors.toList());
+        System.out.println(collect);
+    }
+
+
+    /**
+     * 按照对象的某个属性，对list进行去重
+     */
+    private <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> objects = ConcurrentHashMap.newKeySet();
+        return t -> objects.add(keyExtractor.apply(t));
     }
 
 }

@@ -2,15 +2,11 @@ package com.example.io;
 
 import cn.hutool.crypto.digest.MD5;
 import com.example.lambda.ThrowingFunction;
-import com.example.optional.Employee;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.List;
@@ -195,21 +191,28 @@ public class FileTest {
 
     @Test
     public void test01() throws IOException {
-        List<Employee> list = List.of(Employee.builder().name("jsduiolfg").describe("描述").build(), Employee.builder().name("asdgdsfagd").describe("描述").build());
-        List<String> collect = list.stream().map(e -> e.getName() + StringUtils.SPACE + e.getDescribe()).collect(Collectors.toList());
-        log.info("{}", collect);
-        Files.write(Path.of("spFilePath/demo.txt"), collect, StandardOpenOption.TRUNCATE_EXISTING);
+        Files.write(Path.of("spFilePath/demo.txt"), List.of(), StandardOpenOption.TRUNCATE_EXISTING);
     }
 
 
     @Test
     public void test02(){
-//        File file = new File("E:\\enlink\\SwordClient_x64_v2.1.0.0020_V2.2研发.exe");
+//        File file = new File("E:\\lvmc\\SwordClient_x64_v2.1.0.0020_V2.2研发.exe");
 //        File file1 = new File("F:\\极客时间\\DDD实战\\SwordClient_x64_v2.1.0.0020_V2.2研发.exe");
         String s = MD5.create().digestHex("202111081707131131457635809111969792b319d116f4f352671d0da866232d7de6");
         String s1 = MD5.create().digestHex("202111081707131131457635809111969792cbd8655dbf0d772be724d7edd2536fdf");
 //        String s1 = MD5.create().digestHex16(file);
         log.info(s);
         log.info(s1);
+    }
+
+
+    @Test
+    public void test03() throws IOException {
+        URL fileUrl = new URL("http://m.nj.bendibao.com/live/hukouqianyizheng/");
+        try (InputStream inputStream = fileUrl.openStream()) {
+            Path path = Paths.get("/code/JavaSE/xx.html");
+            Files.copy(inputStream, path);
+        }
     }
 }

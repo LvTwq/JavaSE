@@ -13,6 +13,15 @@ import java.util.Set;
 @Slf4j
 public class IteratorEach {
 
+
+    @Test
+    public void test01() {
+        Set<String> uniqueDtoSet = new HashSet<>();
+        System.out.println(uniqueDtoSet.add("1"));
+        System.out.println(uniqueDtoSet.add("2"));
+        System.out.println(uniqueDtoSet.add("1"));
+    }
+
     public static void main(String[] args) {
         Set<String> books = new HashSet<>();
         books.add("javascript");

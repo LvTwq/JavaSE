@@ -5,9 +5,13 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author 吕茂陈
@@ -209,4 +213,59 @@ public class CompletableFutureTest {
         });
         future.get();
     }
+
+
+    @Test
+    public void test10() throws ExecutionException, InterruptedException {
+        CompletableFuture<List<String>> future1 = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return List.of("1");
+        });
+        CompletableFuture<List<String>> future3 = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return List.of("1");
+        });
+
+        CompletableFuture<List<String>> combinedFuture = CompletableFuture.allOf(future1, future3)
+                .thenApply(v ->
+                        Stream.of(future1, future3).map(CompletableFuture::join)
+                                .flatMap(List::stream)
+                                .collect(Collectors.toList())
+                );
+        List<String> strings = combinedFuture.get();
+        log.info("{}", strings);
+    }
+
+
+    @Test
+    public void test11() throws ExecutionException, InterruptedException {
+        List<Integer> list = new ArrayList<>();
+
+        // 创建10个CompletableFuture对象，每个对象填充一个数字到List中
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            int num = i;
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                list.add(num);
+            });
+            futures.add(future);
+        }
+
+        // 等待所有CompletableFuture执行完毕
+        CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+
+        // 等待所有CompletableFuture执行完毕后，输出List中的所有数据
+        allFutures.thenRun(() -> {
+            log.info("{}", list);
+        }).get();
+    }
+
 }

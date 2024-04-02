@@ -1,14 +1,15 @@
 package com.example.math;
 
+import com.google.common.util.concurrent.RateLimiter;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.junit.Test;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author 吕茂陈
@@ -120,13 +121,55 @@ public class NumberTest {
 
 
     @Test
-    public void test05(){
+    public void test05() {
         BigDecimal bigDecimal = new BigDecimal("3.1415");
         log.info("{}", bigDecimal);
         log.info("{}", bigDecimal.toBigInteger());
         log.info("{}", bigDecimal.toBigInteger().intValue());
         log.info("{}", bigDecimal.toBigInteger().intValueExact());
 
+    }
+
+
+    @Test
+    public void test06() {
+        // 不保留小数点，进位
+        String s = new BigDecimal("0.66").setScale(0, RoundingMode.HALF_UP).toPlainString();
+        System.out.println(s);
+
+        int i = new BigDecimal("1.66").setScale(0, RoundingMode.HALF_UP).intValue();
+        System.out.println(i);
+
+        String s1 = new BigDecimal("1").divide(new BigDecimal("3"), 0, RoundingMode.HALF_UP).setScale(0, RoundingMode.HALF_UP).toPlainString();
+        System.out.println(s1);
+
+        String s2 = new BigDecimal("1").divide(new BigDecimal("3"), 0, RoundingMode.UP).toPlainString();
+        System.out.println(s2);
+
+
+
+        double size = new BigDecimal(1).divide(new BigDecimal(60), 4, RoundingMode.UP).doubleValue();
+        System.out.println(size);
+
+        double size2 = new BigDecimal(1).divide(new BigDecimal(60), 4, RoundingMode.DOWN).doubleValue();
+        System.out.println(size2);
+
+        double size1 = 1 / 60;
+        System.out.println(size1);
+
+        RateLimiter limiter = RateLimiter.create(0.0167);
+        System.out.println(limiter.getRate());
+    }
+
+
+    @Test
+    public void test07() {
+        Integer i = 1;
+        Integer i1 = null;
+        // false
+        System.out.println(i.equals(null));
+        // NullPointerException
+        System.out.println(i1.equals(i));
     }
 
 }

@@ -17,10 +17,10 @@ public class Client {
         Request request1 = new Request(RequestType.type1, "request1");
         handler3.handleRequest(request1);
 
-        Request request2 = new Request(RequestType.type2, "request2");
+        /*Request request2 = new Request(RequestType.type2, "request2");
         handler3.handleRequest(request2);
 
         Request request3 = new Request(RequestType.type3, "request3");
-        handler3.handleRequest(request3);
+        handler3.handleRequest(request3);*/
     }
 }

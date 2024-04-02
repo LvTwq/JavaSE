@@ -1,19 +1,15 @@
 package com.example.stream;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
+import com.example.oop.Dog;
+import com.example.oop.Person;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 
-import com.example.oop.Person;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * @author 吕茂陈
@@ -49,6 +45,7 @@ public class Java8Tester {
         newIs.forEach(System.out::println);
 
     }
+
 
 
     @Test
@@ -115,4 +112,21 @@ public class Java8Tester {
 
     }
 
+    @Test
+    public void test08() {
+        // 这个 person 里的 Dog 为null，在map里直接get，会进 orElse
+//        Person person = Person.builder().dog(null).build();
+        Person person = Person.builder().dog(Dog.builder().name(null).build()).build();
+        String s = Optional.ofNullable(person).map(Person::getDog).map(Dog::getName).orElse("11111");
+        System.out.println(s);
+    }
+
+
+
+    @Test
+    public void test09() {
+        List<String> imageTypes = List.of("JPG", "JPEG", "GIF", "PNG", "BMP", "PCX", "TGA", "PSD", "TIFF");
+        System.out.println(StringUtils.containsIgnoreCase("微信扫码关注，好书还会有的.jpg", "JPG"));
+        System.out.println(imageTypes.stream().noneMatch(e -> StringUtils.containsIgnoreCase("微信扫码关注，好书还会有的.jpg", e)));
+    }
 }

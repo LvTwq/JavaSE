@@ -18,7 +18,7 @@ public enum Gender2 {
      *
      * @param name
      */
-    private Gender2(String name) {
+    Gender2(String name) {
         this.name = name;
     }
 

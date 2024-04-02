@@ -1,9 +1,12 @@
 package com.example.array;
 
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,8 +16,21 @@ import java.util.stream.Collectors;
 @Slf4j
 public class Num2Rmb {
 
-    private String[] hanArr = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
-    private String[] unitArr = {"十", "百", "千"};
+    public static void main(String[] args) {
+        List<String> slList = Lists.newArrayList("9", "10", "11", "12", "13");
+        List<String> arrFklx = new ArrayList<>();
+        arrFklx.add("1");
+        System.out.println(Collections.disjoint(arrFklx, slList));
+
+        // 取交集
+        boolean b = slList.retainAll(arrFklx);
+        System.out.println(b);
+        for (String s : slList) {
+            System.out.println(s);
+        }
+    }
+
+
 
     /**
      * 将一个浮点数分解成整数部分和小数部分字符串
@@ -30,13 +46,20 @@ public class Num2Rmb {
         return new String[]{zheng + "", String.valueOf(xiao)};
     }
 
+
+
+
     /**
      * 把一个四位数字字符串转成汉字字符串
      *
      * @param numStr
      * @return
      */
-    private String toHanStr(String numStr) {
+    @Test
+    public void toHanStr() {
+        String[] hanArr = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
+        String[] unitArr = {"十", "百", "千"};
+        String numStr = "6109";
         String result = "";
         int numLen = numStr.length();
         for (int i = 0; i < numLen; i++) {
@@ -49,13 +72,7 @@ public class Num2Rmb {
                 result += hanArr[num];
             }
         }
-        return result;
-    }
-
-    public static void main(String[] args) {
-        Num2Rmb nr = new Num2Rmb();
-        //log.info(Arrays.toString(nr.divide(236711125.123)));
-        log.info(nr.toHanStr("6109"));
+        log.info("{}", result);
     }
 
 
@@ -72,8 +89,8 @@ public class Num2Rmb {
     }
 
     @Test
-    public void test02(){
-        String[] arr = {"1","2","3"};
+    public void test02() {
+        String[] arr = {"1", "2", "3"};
         // 这个 ArrayList 是 Arrays 的内部类，继承自 AbstractList 类，并没有覆写父类的 add 方法，而父类中 add 方法的实现，就是抛出 UnsupportedOperationException
         List<String> list = Arrays.asList(arr);
 

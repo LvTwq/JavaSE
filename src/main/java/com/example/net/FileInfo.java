@@ -43,10 +43,12 @@ public class FileInfo {
 	/**
 	 * 类型：enclient/entools/endoc
 	 */
-	private String type;
+	private String centerType;
 	/**
 	 * 版本
 	 */
 	private String version;
+
+	private String name;
 
 }

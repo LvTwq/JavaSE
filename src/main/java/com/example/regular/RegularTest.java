@@ -1,10 +1,17 @@
 package com.example.regular;
 
+import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 正则学习
@@ -13,6 +20,21 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 public class RegularTest {
+
+
+    @Test
+    public void test13() {
+        List<String> forwarderNames = Arrays.stream("jai,sdgi，jspdr".split("[,，]"))
+                .map(String::trim).collect(Collectors.toList());
+        System.out.println(forwarderNames);
+    }
+
+
+    @Test
+    public void test12() {
+        System.out.println(Validator.isUrl("http://www.baidu.com"));
+        System.out.println(Validator.isUrl("http://www,baidu.com"));
+    }
 
 
     private static final Pattern ExpPattern = Pattern.compile("\\[(.*?)]");
@@ -64,6 +86,7 @@ public class RegularTest {
 
 
     private static final Pattern test03 = Pattern.compile("a*b");
+
     @Test
     public void test03() {
         /*
@@ -81,6 +104,7 @@ public class RegularTest {
      * 匹配 13X和15X段的手机号
      */
     private static final Pattern test04 = Pattern.compile("((13)|(15))\\d{9}");
+
     @Test
     public void test04() {
         String str = "联系方式13500006666，联系我15899903312";
@@ -97,6 +121,7 @@ public class RegularTest {
      * 匹配所有单词字符，包括0~9所有数字，26个英文字母和下划线
      */
     private static final Pattern test05 = Pattern.compile("\\w+");
+
     @Test
     public void test05() {
         String str = "Java is very easy!";
@@ -108,11 +133,11 @@ public class RegularTest {
     }
 
 
-
     /**
      * 匹配邮箱地址
      */
     private static final Pattern test06 = Pattern.compile("\\w{3,20}@\\w+\\.(com|org|cn|net|gov)");
+
     @Test
     public void test06() {
         String[] mails = {
@@ -171,12 +196,142 @@ public class RegularTest {
         // NullPointerException
 //		String str = null;
         Matcher matcher = IE_VERSION.matcher(str);
+        double ieVer = 0;
         while (matcher.find()) {
             // MSIE 8.0;
             log.info(matcher.group(0));
             // 8.0
-            log.info(matcher.group(1));
+            ieVer = Double.parseDouble(matcher.group(1));
         }
+        log.info("{}", ieVer);
+        log.info("{}", ieVer <= 10);
+
+    }
+
+
+    private static final Pattern actionPattern = Pattern.compile("ModSecurity: (.*?)\\.");
+    private static final Pattern serverPattern = Pattern.compile("(server: (.*?),)");
+    private static final Pattern deniedHostPattern = Pattern.compile("(host: \"(.*?)\")");
+    private static final Pattern warningHostPattern = Pattern.compile("(Host: (.*?))");
+    private static final Pattern paramPattern = Pattern.compile("(\\[(.*?)\\])");
+
+    private static final Pattern requestPattern = Pattern.compile("(request: \"(.*?)\")");
+
+    @Test
+    public void test11() {
+//        String all = "---38g72lJL---A--\n[03/Nov/2023:08:08:33 +0800] 169897011338.275133 10.10.72.118 49765 10.10.108.156 443\n---38g72lJL---B--\nGET /?query=test%27%20OR%20%271%27=%271 HTTP/1.1\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36 Edg/118.0.2088.76\nSec-Fetch-Site: none\nsec-ch-ua-platform: \"Windows\"\nPragma: no-cache\nUpgrade-Insecure-Requests: 1\nsec-ch-ua-mobile: ?0\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\nCache-Control: no-cache\nsec-ch-ua: \"Chromium\";v=\"118\", \"Microsoft Edge\";v=\"118\", \"Not=A?Brand\";v=\"99\"\nSec-Fetch-User: ?1\nConnection: keep-alive\nSec-Fetch-Mode: navigate\nHost: oula1.lvmc.top\nSec-Fetch-Dest: document\nAccept-Encoding: gzip, deflate, br\nCookie: BD_UPN=12314753\nAccept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6\n\n\n---38g72lJL---H--\nModSecurity: Warning. detected SQLi using libinjection. [file \"/home/lvmc-plus/lvmc/appgateway/modsec/././ruleset/owasp-modsecurity-crs-3.0.2/rules/REQUEST-942-APPLICATION-ATTACK-SQLI.conf\"] [line \"43\"] [id \"942100\"] [rev \"1\"] [msg \"SQL Injection Attack Detected via libinjection\"] [data \"Matched Data: s&sos found within ARGS:query: test' OR '1'='1\"] [severity \"4\"] [ver \"OWASP_CRS/3.0.0\"] [maturity \"1\"] [accuracy \"8\"] [hostname \"10.10.108.156\"] [uri \"/\"] [unique_id \"169897011338.275133\"] [ref \"v12,15\"]\n\n---38g72lJL---Z--\n";
+        String all = "---3Pl1rxyJ---A--\n" +
+                "[03/Nov/2023:17:38:48 +0800] 16990043285.609005 10.10.72.118 55435 10.10.108.156 443\n" +
+                "---3Pl1rxyJ---B--\n" +
+                "GET /index.html?cmd=%7C%65%63%68%6F%20%27%54%65%73%74%69%6E%67%27 HTTP/1.1\n" +
+                "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36 Edg/118.0.2088.76\n" +
+                "Sec-Fetch-Site: none\n" +
+                "sec-ch-ua-platform: \"Windows\"\n" +
+                "Upgrade-Insecure-Requests: 1\n" +
+                "If-None-Match: W/\"c1d2d-30a-5b2a4a25f34ad\"\n" +
+                "sec-ch-ua-mobile: ?0\n" +
+                "If-Modified-Since: Tue, 27 Oct 2020 10:37:32 GMT\n" +
+                "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\n" +
+                "Cache-Control: max-age=0\n" +
+                "sec-ch-ua: \"Chromium\";v=\"118\", \"Microsoft Edge\";v=\"118\", \"Not=A?Brand\";v=\"99\"\n" +
+                "Sec-Fetch-User: ?1\n" +
+                "Sec-Fetch-Mode: navigate\n" +
+                "Connection: keep-alive\n" +
+                "Host: oula2.lvmc.top\n" +
+                "Sec-Fetch-Dest: document\n" +
+                "Accept-Encoding: gzip, deflate, br\n" +
+                "Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6\n" +
+                "\n" +
+                "\n" +
+                "---3Pl1rxyJ---H--\n" +
+                "ModSecurity: Warning. Matched \"Operator `Rx' with parameter `(?:;|\\{|\\||\\|\\||&|&&|\\n|\\r|\\$\\(|\\$\\(\\(|`|\\${|<\\(|>\\(|\\(\\s*\\))\\s*(?:{|\\s*\\(\\s*|\\w+=(?:[^\\s]*|\\$.*|\\$.*|<.*|>.*|\\'.*\\'|\\\".*\\\")\\s+|!\\s*|\\$)*\\s*(?:'|\\\")*(?:[\\?\\*\\[\\]\\(\\)\\-\\|+\\w'\\\"\\./\\\\\\\\]+/)?[\\\\\\\\'\\\"]*(?: (5223 characters omitted)' against variable `ARGS:cmd' (Value: `|echo 'Testing'' ) [file \"/home/lvmc-plus/lvmc/appgateway/modsec/././ruleset/owasp-modsecurity-crs-3.0.2/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf\"] [line \"56\"] [id \"932100\"] [rev \"4\"] [msg \"Remote Command Execution: Unix Command Injection\"] [data \"Matched Data: |echo 'Testing found within ARGS:cmd: |echo 'Testing'\"] [severity \"2\"] [ver \"OWASP_CRS/3.0.0\"] [maturity \"8\"] [accuracy \"8\"] [tag \"application-multi\"] [tag \"language-shell\"] [tag \"platform-unix\"] [tag \"attack-rce\"] [tag \"OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION\"] [tag \"WASCTC/WASC-31\"] [tag \"OWASP_TOP_10/A1\"] [tag \"PCI/6.5.2\"] [hostname \"10.10.108.156\"] [uri \"/index.html\"] [unique_id \"16990043285.609005\"] [ref \"o0,14v20,15\"]\n" +
+                "ModSecurity: Warning. Matched \"Operator `Rx' with parameter `(?i)(?:;|\\{|\\||\\|\\||&|&&|\\n|\\r|`)\\s*[\\(,@\\'\\\"\\s]*(?:[\\w'\\\"\\./]+/|[\\\\\\\\'\\\"\\^]*\\w[\\\\\\\\'\\\"\\^]*:.*\\\\\\\\|[\\^\\.\\w '\\\"/\\\\\\\\]*\\\\\\\\)?[\\\"\\^]*(?:m[\\\"\\^]*(?:y[\\\"\\^]*s[\\\"\\^]*q[\\\"\\^]*l(?:[\\\"\\^]*(?:d[\\\"\\^]*u[\\\"\\^]*m[ (4992 characters omitted)' against variable `ARGS:cmd' (Value: `|echo 'Testing'' ) [file \"/home/lvmc-plus/lvmc/appgateway/modsec/././ruleset/owasp-modsecurity-crs-3.0.2/rules/REQUEST-932-APPLICATION-ATTACK-RCE.conf\"] [line \"160\"] [id \"932110\"] [rev \"4\"] [msg \"Remote Command Execution: Windows Command Injection\"] [data \"Matched Data: |echo found within ARGS:cmd: |echo 'Testing'\"] [severity \"2\"] [ver \"OWASP_CRS/3.0.0\"] [maturity \"9\"] [accuracy \"8\"] [tag \"application-multi\"] [tag \"language-shell\"] [tag \"platform-windows\"] [tag \"attack-rce\"] [tag \"OWASP_CRS/WEB_ATTACK/COMMAND_INJECTION\"] [tag \"WASCTC/WASC-31\"] [tag \"OWASP_TOP_10/A1\"] [tag \"PCI/6.5.2\"] [hostname \"10.10.108.156\"] [uri \"/index.html\"] [unique_id \"16990043285.609005\"] [ref \"o0,5v20,15\"]\n" +
+                "\n" +
+                "---3Pl1rxyJ---Z--";
+        JSONObject jsonObject = new JSONObject();
+        String hostPort = "";
+        for (String temp : StringUtils.split(all, "\n")) {
+
+            if (StringUtils.startsWith(temp, "[")) {
+                String[] split = StringUtils.split(temp, " ");
+                jsonObject.set("client", split[5]);
+                hostPort = split[6];
+            }
+
+            // 处理Warning的Request
+            if (StringUtils.startsWith(temp, "GET ")) {
+                String[] split = StringUtils.split(temp, " ");
+                jsonObject.set("request", split[1]);
+            }
+
+            Matcher requestMatcher = requestPattern.matcher(temp);
+            if (requestMatcher.find()) {
+                String str = requestMatcher.group(1);
+                String requestStr = StrUtil.removeAny(StrUtil.subAfter(str, ": ", false), "\"", "GET ", "HTTP/1.1");
+                jsonObject.set("request", requestStr);
+            }
+
+            if (StringUtils.contains(temp, "Host")) {
+                String host = StringUtils.remove(temp, "Host: ");
+                // 说明没有端口
+                if (!StringUtils.contains(host, ":") && StringUtils.isNotBlank(hostPort)) {
+                    host = host + hostPort;
+                }
+                jsonObject.set("host", host);
+            }
+
+            if (StrUtil.contains(temp,"ModSecurity")) {
+                // 匹配 ModSecurity: 和 . 之间的字符串
+                String action = "";
+                Matcher actionMatcher = actionPattern.matcher(temp);
+                if (actionMatcher.find()) {
+                    String result = actionMatcher.group(1);
+                    // 执行动作
+                    if (StringUtils.contains(result, "denied")) {
+                        result = "denied";
+                    }
+                    jsonObject.set("action" , result);
+                    action = result;
+                }
+
+                Matcher paramMatcher = paramPattern.matcher(temp);
+                while (paramMatcher.find()) {
+                    String str = paramMatcher.group(1);
+                    String result = StrUtil.unWrap(str,"[","]");
+                    String ttt = StrUtil.subBefore(result," ",false);
+                    String ddd = StrUtil.subAfter(result," ",false);
+                    if (StrUtil.isNotBlank(ddd)){
+                        ddd = StrUtil.removePrefix(ddd,"\"");
+                        ddd = StrUtil.removeSuffix(ddd,"\"");
+                    }
+                    jsonObject.set(ttt,ddd);
+                }
+
+                Matcher serverMatcher = serverPattern.matcher(temp);
+                if (serverMatcher.find()){
+                    String str = serverMatcher.group(1);
+                    String ddd = StrUtil.subAfter(str,": ",false);
+                    ddd = StrUtil.removeSuffix(ddd,",");
+                    jsonObject.set("server",ddd);
+                }
+
+                Matcher deniedHostMatcher = deniedHostPattern.matcher(temp);
+                if (deniedHostMatcher.find()) {
+                    String str = deniedHostMatcher.group(1);
+                    String host = StrUtil.removeAll(StrUtil.subAfter(str,": ",false), "\"");
+                    // todo 如果是默认端口，这里不能直接拿到
+                    jsonObject.set("host", host);
+                }
+
+
+                // 原始日志时间不好取，取当前时间
+                long mills = System.currentTimeMillis();
+                jsonObject.set("@mtime",mills);
+//            jsonObject.set("@timestamp",tsToString(mills));
+
+            }
+        }
+        jsonObject.set("111", "111");
     }
 
 }
