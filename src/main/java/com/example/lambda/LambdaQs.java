@@ -29,4 +29,17 @@ public class LambdaQs {
 
         qs.test((a, b) -> a + b);
     }
+
+
+    interface Eatable {
+        void taste();
+    }
+
+    interface Flyable{
+        void fly(String weather);
+    }
+
+    interface Addable{
+        int add(int a,int b);
+    }
 }

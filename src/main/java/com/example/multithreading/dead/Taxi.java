@@ -29,34 +29,35 @@ public class Taxi {
 
         }
     }
-}
 
-class Dispatcher {
+    class Dispatcher {
 
-    private final Set<Taxi> taxis;
-    private final Set<Taxi> availableTaxis;
+        private final Set<Taxi> taxis;
+        private final Set<Taxi> availableTaxis;
 
-    public Dispatcher() {
-        this.taxis = new HashSet<>();
-        this.availableTaxis = new HashSet<>();
-    }
-
-    public synchronized void notifyAvailable(Taxi taxi) {
-        availableTaxis.add(taxi);
-    }
-
-    public synchronized Image getImage() {
-        Image image = new Image();
-        for (Taxi t : taxis) {
-            image.drawMarker(t.getLocation());
+        public Dispatcher() {
+            this.taxis = new HashSet<>();
+            this.availableTaxis = new HashSet<>();
         }
-        return image;
+
+        public synchronized void notifyAvailable(Taxi taxi) {
+            availableTaxis.add(taxi);
+        }
+
+        public synchronized Image getImage() {
+            Image image = new Image();
+            for (Taxi t : taxis) {
+                image.drawMarker(t.getLocation());
+            }
+            return image;
+        }
+    }
+
+    class Image {
+
+        public void drawMarker(Point location) {
+
+        }
     }
 }
 
-class Image {
-
-    public void drawMarker(Point location) {
-
-    }
-}

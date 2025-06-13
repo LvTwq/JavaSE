@@ -338,4 +338,42 @@ public class HttpClientTest {
             e.printStackTrace();
         }
     }
+
+
+    @Test
+    public void test08() {
+        URI uri = URI.create("https://www.baidu.com?name=lmc&pass=111");
+        System.out.println(uri.getQuery());
+        System.out.println(uri.getRawQuery());
+        System.out.println(uri.getHost());
+        System.out.println(uri.getAuthority());
+        System.out.println(uri.getRawAuthority());
+
+        URI uri1 = URI.create("https:/www.bai");
+        System.out.println(uri1.getHost());
+    }
+
+
+    @Test
+    public void test09() {
+        HttpResponse httpResponse = HttpRequest.post("http://192.168.100.34:9092/uploadfile/")
+                .form("file", new File("/C:/Users/Administrator/Desktop/202409091535311833046564310196226000.txt"))
+                .timeout(30000)
+                .execute();
+        System.out.println(httpResponse.isOk());
+        System.out.println(httpResponse.body());
+    }
+
+
+
+    @Test
+    public void test11() {
+        String response = HttpUtil.post("https://114.213.149.100:15443/app/auth/v1/authentication", "{\n" +
+                "    \"code\": \"zhanapp\",\n" +
+                "    \"authCode\": \"NWVjNDJkM2ZjMDA5NDE5MTk3Y2RhZTk0YmUyZTNjMzc=\",\n" +
+                "    \"signature\": \"\",\n" +
+                "    \"signAlgorithm\": \"\"\n" +
+                "}");
+        System.out.println(response);
+    }
 }

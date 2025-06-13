@@ -1,4 +1,4 @@
-package com.example.repeatcode;
+package com.example.designpatterns.repeatcode;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

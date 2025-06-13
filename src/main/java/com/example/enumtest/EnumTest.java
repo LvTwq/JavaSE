@@ -47,5 +47,37 @@ public class EnumTest {
         System.out.println(s);
     }
 
+    public static enum ModelState {
+        /**
+         * 正常
+         */
+        NORMAL,
+        /**
+         * 删除
+         */
+        DELETE,
+        /**
+         * 在职
+         */
+        ONWORK,
+        /**
+         * 离职
+         */
+        LEAVE,
+        /**
+         * 冻结
+         */
+        FROZEN,
+
+    }
+
+    @Test
+    public void test02() {
+        // 0
+        System.out.println(ModelState.NORMAL.ordinal());
+        // 1
+        System.out.println(ModelState.DELETE.ordinal());
+    }
+
 
 }

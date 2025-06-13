@@ -9,7 +9,7 @@ public class LambdaAndInner {
 
     public void test() {
         String book = "Java";
-        Displayable dis = () -> {
+        ConverterTest.Displayable dis = () -> {
             System.out.println("book局部变量：" + book);
             System.out.println("外部类age实例变量：" + age);
             System.out.println("外部类name类变量：" + name);

@@ -2,8 +2,15 @@ package com.example.jvm;
 
 import lombok.experimental.UtilityClass;
 
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.management.*;
+import java.util.List;
+
+import static java.lang.management.ManagementFactory.MEMORY_MXBEAN_NAME;
 
 /**
  * @author 吕茂陈
@@ -85,5 +92,22 @@ public class JVMUtil {
         }
         sb.append('\n');
         return sb.toString();
+    }
+
+
+    private long fullGCMonitor() throws MalformedObjectNameException, IOException {
+
+        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+        ObjectName name = ObjectName.getInstance(MEMORY_MXBEAN_NAME);
+        MemoryMXBean memoryMXBean = ManagementFactory.newPlatformMXBeanProxy(mbs, name.toString(), MemoryMXBean.class);
+
+        long fullGCCount = 0;
+        List<GarbageCollectorMXBean> gcBeans = ManagementFactory.getGarbageCollectorMXBeans();
+        for (GarbageCollectorMXBean gcBean : gcBeans) {
+            if (gcBean.isValid() && gcBean.getName().contains("MarkSweep")) {
+                fullGCCount += gcBean.getCollectionCount();
+            }
+        }
+        return fullGCCount;
     }
 }

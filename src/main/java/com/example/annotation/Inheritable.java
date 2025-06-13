@@ -14,10 +14,6 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface Inheritable {
 
-}
-
-@Inheritable
-class Base {
-
 
 }
+

@@ -1,8 +1,8 @@
 package com.example.invoke;
 
-import java.lang.reflect.Field;
-
 import lombok.extern.slf4j.Slf4j;
+
+import java.lang.reflect.Field;
 
 /**
  * @author 吕茂陈
@@ -25,17 +25,19 @@ public class FieldTest {
         ageField.setInt(person, 25);
         log.info("{}", person);
     }
-}
 
-class Person {
-    private String name;
-    private int age;
+    static class Person {
+        private String name;
+        private int age;
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                '}';
+        @Override
+        public String toString() {
+            return "Person{" +
+                    "name='" + name + '\'' +
+                    ", age=" + age +
+                    '}';
+        }
     }
 }
+
+

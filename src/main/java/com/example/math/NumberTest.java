@@ -172,4 +172,23 @@ public class NumberTest {
         System.out.println(i1.equals(i));
     }
 
+    @Test
+    public void test08() {
+        BigInteger start = new BigInteger("1");
+        BigInteger end = new BigInteger("2");
+        // -1
+        System.out.println(start.compareTo(end));
+        // 0
+        System.out.println(start.compareTo(start));
+        // 1
+        System.out.println(end.compareTo(start));
+    }
+
+
+    @Test
+    public void test09() {
+        String s = new BigDecimal("0.56789").multiply(new BigDecimal("100")).setScale(2, RoundingMode.UP).toPlainString() + "%";
+        System.out.println(s);
+    }
+
 }

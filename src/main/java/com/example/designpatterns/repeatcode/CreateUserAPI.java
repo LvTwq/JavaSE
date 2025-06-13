@@ -1,4 +1,4 @@
-package com.example.repeatcode;
+package com.example.designpatterns.repeatcode;
 
 
 import lombok.Data;

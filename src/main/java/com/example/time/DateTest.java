@@ -2,6 +2,7 @@ package com.example.time;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+import static cn.hutool.core.date.DatePattern.PURE_DATETIME_FORMAT;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -259,5 +261,55 @@ public class DateTest {
     public void test18() {
         double v = Double.parseDouble("2.5875000000000004");
         System.out.println(v);
+    }
+
+    @Test
+    public void test19() {
+        DateTime dateTime = DateUtil.parse("2024-03-22 14:16:12");
+        System.out.println(DateUtil.format(dateTime, PURE_DATETIME_FORMAT));
+    }
+
+
+    @Test
+    public void test20() {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDateTime startOfYesterday = LocalDateTime.of(yesterday, LocalTime.MIN);
+        LocalDateTime endOfYesterday = LocalDateTime.of(yesterday, LocalTime.MAX);
+        System.out.println(startOfYesterday);
+        System.out.println(endOfYesterday);
+
+        long start = startOfYesterday.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        long end = endOfYesterday.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        System.out.println(start);
+        System.out.println(end);
+    }
+
+
+    @Test
+    public void test21() {
+        DateTime today = DateUtil.beginOfDay(new Date());
+
+        // 9999-13-31 00:00:00
+        long day = DateUtil.between(new Date(), new Date(253402185600000L), DateUnit.DAY,false);
+        System.out.println(day);
+
+
+        // 2024-05-21 00:00:00
+        long day2 = DateUtil.between(today, new Date(1716220800000L), DateUnit.DAY,false);
+        System.out.println(day2);
+
+    }
+
+
+    @Test
+    public void test22() {
+        DateTime dateTime = DateTime.of(System.currentTimeMillis());
+        System.out.println(dateTime);
+    }
+
+    @Test
+    public void test23() {
+        long epochMilli = DateUtil.toInstant(new Date()).toEpochMilli();
+        System.out.println(epochMilli);
     }
 }

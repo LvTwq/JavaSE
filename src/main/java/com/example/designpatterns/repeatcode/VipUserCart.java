@@ -1,9 +1,9 @@
-package com.example.repeatcode;
+package com.example.designpatterns.repeatcode;
 
-
-import java.math.BigDecimal;
 
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service(value = "VipUserCart")
 public class VipUserCart extends NormalUserCart {

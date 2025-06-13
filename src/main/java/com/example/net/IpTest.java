@@ -1,6 +1,7 @@
 package com.example.net;
 
 import cn.hutool.core.net.Ipv4Util;
+import cn.hutool.core.net.NetUtil;
 import org.junit.Test;
 
 /**
@@ -32,5 +33,19 @@ public class IpTest {
         }
 
         return String.valueOf(len);
+    }
+
+
+    @Test
+    public void test02() {
+        System.out.println(Ipv4Util.getBeginIpStr("10.1.1.1", 8));
+    }
+
+
+    @Test
+    public void test03() {
+        System.out.println(NetUtil.isInRange("10.2.1.1", "10.0.0.0/8"));
+        System.out.println(NetUtil.isInRange("10.2.1.1", "10.0.0.0-10.255.255.255"));
+        System.out.println(NetUtil.isInRange("11.2.1.1", "10.0.0.0/8"));
     }
 }

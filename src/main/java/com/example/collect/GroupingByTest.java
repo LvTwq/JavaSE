@@ -15,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -108,7 +109,6 @@ public class GroupingByTest {
         log.info("按子组收集数据-把收集器的结果转换为另一种类型:{}", JSONUtil.toJsonPrettyStr(prodMap6));
 
 
-
         Map<String, Set<String>> prodMap7 = prodList.stream().collect(Collectors.groupingBy(Product::getCategory, Collectors.mapping(Product::getName, Collectors.toSet())));
         log.info("按子组收集数据-联合其他收集器:{}", JSONUtil.toJsonPrettyStr(prodMap7));
 
@@ -121,7 +121,6 @@ public class GroupingByTest {
         log.info("转换:{}", JSONUtil.toJsonPrettyStr(collect));
 
     }
-
 
 
     @Data
@@ -149,6 +148,57 @@ public class GroupingByTest {
                 .sorted(Comparator.comparing(DataObject::getCreateTime))
                 .collect(Collectors.groupingBy(DataObject::getDeviceId));
         System.out.println(groupedData);
+    }
+
+
+    @Test
+    public void test04() {
+        Map<String, Set<String>> appOsMap = Map.of(
+                "1", Set.of("windows", "ios"),
+                "2", Set.of("mac"),
+                "3", Set.of("ios"),
+                "all", Set.of("all"),
+        "4", Set.of("linux"));
+
+        List<ServiceInfoModel> serviceList = List.of(new ServiceInfoModel("1", "baidu"),
+                new ServiceInfoModel("2", "baidu"),
+                new ServiceInfoModel("3", "zhihu"),
+                new ServiceInfoModel("4", "zhihu"));
+
+        Map<String, Set<String>> collect = serviceList.stream()
+                .collect(Collectors.groupingBy(ServiceInfoModel::getServer,
+                        Collectors.mapping(new Function<ServiceInfoModel, Set<String>>() {
+                            @Override
+                            public Set<String> apply(ServiceInfoModel serviceInfoModel) {
+                                String serverId = serviceInfoModel.getId();
+
+                                return appOsMap.getOrDefault(serverId, new HashSet<>());
+                            }
+                        }, Collectors.reducing(new HashSet<String>(), (set1, set2) -> {
+                            set1.addAll(set2);
+                            return set1;
+                        }))));
+        System.out.println(collect);
+
+        Map<String, Set<String>> resultMap = serviceList.stream()
+                .flatMap(service -> appOsMap.getOrDefault(service.getId(), new HashSet<>()).stream().map(os ->
+                        new AbstractMap.SimpleEntry<>(service.getServer(), os)))
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getKey,
+                        Collectors.mapping(Map.Entry::getValue, Collectors.toSet())));
+
+        // 输出 resultMap
+        System.out.println(resultMap);
+
+    }
+
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class ServiceInfoModel {
+        private String id;
+        private String server;
     }
 
 }

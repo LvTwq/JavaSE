@@ -1,24 +1,12 @@
 package com.example.collect;
 
-import java.util.Hashtable;
-import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode
-@AllArgsConstructor
-class A {
-    int count;
-}
+import java.util.Hashtable;
+import java.util.Map;
 
 
-class B {
-    @Override
-    public boolean equals(Object obj) {
-        return true;
-    }
-}
 
 /**
  * @author 吕茂陈
@@ -41,5 +29,20 @@ public class HashtableTest {
         System.out.println(o);
         System.out.println(o.getClass());
         System.out.println(ht);
+    }
+
+
+    @EqualsAndHashCode
+    @AllArgsConstructor
+    static class A {
+        int count;
+    }
+
+
+    static class B {
+        @Override
+        public boolean equals(Object obj) {
+            return true;
+        }
     }
 }

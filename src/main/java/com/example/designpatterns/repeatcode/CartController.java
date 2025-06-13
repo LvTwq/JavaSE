@@ -1,4 +1,4 @@
-package com.example.repeatcode;
+package com.example.designpatterns.repeatcode;
 
 public class CartController {
 

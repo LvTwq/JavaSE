@@ -14,8 +14,10 @@ public class AnonymousTest {
         // 使用通配符，此时相当于通配符的上限为number
         Foo<? extends Number> fn = (Foo) number -> System.out.println("test方法的number参数为：" + number);
     }
+
+    interface Foo<T> {
+        public abstract void test(T t);
+    }
+
 }
 
-interface Foo<T> {
-    public abstract void test(T t);
-}
