@@ -356,7 +356,7 @@ public class HttpClientTest {
 
     @Test
     public void test09() {
-        HttpResponse httpResponse = HttpRequest.post("http://192.168.100.34:9092/uploadfile/")
+        HttpResponse httpResponse = HttpRequest.post("http://xxx.xxx.100.34:9092/uploadfile/")
                 .form("file", new File("/C:/Users/Administrator/Desktop/202409091535311833046564310196226000.txt"))
                 .timeout(30000)
                 .execute();

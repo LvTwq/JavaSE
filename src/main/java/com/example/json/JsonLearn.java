@@ -1,6 +1,7 @@
 package com.example.json;
 
 import cn.hutool.json.JSONObject;
+import com.example.oop.Person;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,6 +60,30 @@ public class JsonLearn {
         RespMqttTerminal respMqttTerminal = JackJsonUtil.string2Obj(str, new TypeReference<>() {
                 });
 //        System.out.printf(respMqttTerminal.toString());
+    }
+
+
+    @Test
+    public void test03() {
+        Person person = new Person(18, "张三");
+        String s = JackJsonUtil.obj2String(person);
+        System.out.println(s);
+
+        String str = "[ {\n" +
+                "  \"type\" : \"0\",\n" +
+                "  \"ip\" : \"xxx.xxx.33.186\",\n" +
+                "  \"action\" : 1\n" +
+                "}, {\n" +
+                "  \"type\" : \"2\",\n" +
+                "  \"ip\" : \"xxx.xxx.74.0/24\",\n" +
+                "  \"action\" : 2\n" +
+                "}, {\n" +
+                "  \"type\" : \"3\",\n" +
+                "  \"ip\" : \"xxx.xxx.74.8-xxx.xxx.74.12\",\n" +
+                "  \"action\" : 2\n" +
+                "} ]";
+        List<ReqAccessControlVo> list = JackJsonUtil.string2Obj(str, new TypeReference<>() {});
+        System.out.println(list.get(0).getWeekRange());
     }
 
 }

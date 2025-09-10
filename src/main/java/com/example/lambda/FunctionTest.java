@@ -1,7 +1,6 @@
 package com.example.lambda;
 
 import cn.hutool.json.JSONUtil;
-import com.example.oop.Dog;
 import com.example.oop.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -123,15 +122,7 @@ public class FunctionTest {
 
 
 
-    @Test
-    public void test01() {
-        Person person = new Person("111", 10, new Dog("ooo"));
-        System.out.println(getBlank(person::getName, person::getDog));
-    }
 
-    private <T> List<T> getBlank(Supplier<T> ... suppliers) {
-        return Arrays.stream(suppliers).map(Supplier::get)
-                .filter(Objects::nonNull).collect(Collectors.toList());
-    }
+
 
 }
